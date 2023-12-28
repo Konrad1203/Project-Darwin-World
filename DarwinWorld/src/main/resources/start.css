@@ -1,0 +1,21 @@
+#saveButton { -fx-graphic: url('icons/save24b.png'); }
+#renameButton { -fx-graphic: url('icons/rename24b.png'); }
+#refreshButton {-fx-graphic: url('icons/refresh24g.png'); }
+#removeButton {-fx-graphic: url('icons/remove24.png'); }
+#runSimulationButton {
+    -fx-background-color: #1e881c;
+    -fx-text-fill: white;
+}
+#runSimulationButton:hover {
+    -fx-background-color: #156014;
+}
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    visibility: false;
+    -fx-padding: -3;
+}
+.frameTime .increment-arrow-button,
+.frameTime .decrement-arrow-button {
+    visibility: true;
+    -fx-padding: 5;
+}

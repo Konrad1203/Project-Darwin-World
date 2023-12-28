@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" stylesheets="simulation.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SimPresenter">
+
+    <center>
+        <HBox spacing="20.0">
+            <VBox>
+
+                <VBox alignment="TOP_CENTER">
+                    <Label text="Simulation statistics" styleClass="title"/>
+                    <HBox><Label text="Simulation day:  " /><Label fx:id="day" /></HBox>
+                    <HBox><Label text="Animals number:  " /><Label fx:id="animalCount" /></HBox>
+                    <HBox><Label text="Dead animals number:  " /><Label fx:id="deadAnimalCount" /></HBox>
+                    <HBox><Label text="Plants number:  " /><Label fx:id="plantCount" /></HBox>
+                    <HBox><Label text="Free fields:  " /><Label fx:id="freeFieldCount" /></HBox>
+                    <HBox><Label text="Most popular genomes:  " /><Label fx:id="popularGenotype" /></HBox>
+                    <HBox><Label text="Average energy:  " /><Label fx:id="averageEnergyCount" /></HBox>
+                    <HBox><Label text="Average life span:  " /><Label fx:id="averageLifeSpan" /></HBox>
+                    <HBox><Label text="Average children number:  " /><Label fx:id="averageChildrenCount" /></HBox>
+                <VBox.margin><Insets top="5.0" /></VBox.margin></VBox>
+
+                <VBox fx:id="animalStats" visible="false" alignment="TOP_CENTER">
+                    <Label text="Tracked animal statistics" styleClass="title">
+                        <VBox.margin><Insets top="20.0" /></VBox.margin>
+                    </Label>
+                    <HBox><Label text="Genome:  " /><Label fx:id="genome" /></HBox>
+                    <HBox><Label text="Active genome:  " /><Label fx:id="activeGenome" /></HBox>
+                    <HBox><Label text="Energy:  " /><Label fx:id="energyCount" /></HBox>
+                    <HBox><Label text="Consumed plants:  " /><Label fx:id="plantsEaten" /></HBox>
+                    <HBox><Label text="Children number:  " /><Label fx:id="childrenCount" /></HBox>
+                    <HBox><Label text="Descendants number:  " /><Label fx:id="descendantsCount" /></HBox>
+                    <HBox><Label text="Days survived:  " /><Label fx:id="daysSurvived" /></HBox>
+                    <HBox><Label text="Day of death:  " /><Label fx:id="deathDay" /></HBox>
+                    <HBox alignment="BASELINE_CENTER" spacing="10">
+                        <VBox.margin><Insets top="10.0" /></VBox.margin>
+                        <Button fx:id="startTrackButton" text="Start tracking" />
+                        <Button fx:id="stopTrackButton" text="Stop tracking" />
+                    </HBox>
+                </VBox>
+
+                <LineChart fx:id="chart" animated="false" createSymbols="false" legendVisible="false" title="Simulation chart">
+                    <xAxis><NumberAxis animated="false" autoRanging="false" side="BOTTOM" tickUnit="1" upperBound="10" /></xAxis>
+                    <yAxis><NumberAxis animated="false" side="LEFT" /></yAxis>
+                </LineChart>
+
+                <HBox alignment="BASELINE_CENTER" spacing="15">
+                    <HBox spacing="5"><Circle fill="#00c493" radius="9" /><Label text="Animals" /></HBox>
+                    <HBox spacing="5"><Circle fill="#4fc460" radius="9" /><Label text="Plants" /></HBox>
+                </HBox>
+
+            </VBox>
+
+            <VBox alignment="TOP_CENTER">
+                <Button fx:id="stopStartButton" prefHeight="30.0" prefWidth="200.0" style="-fx-graphic: url('icons/pause24.png');" text="STOP">
+                    <VBox.margin><Insets bottom="20.0" /></VBox.margin>
+                </Button>
+                <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true">
+                    <BorderPane.margin><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></BorderPane.margin>
+                </GridPane>
+            </VBox>
+
+         <BorderPane.margin><Insets bottom="10.0" left="20.0" right="20.0" top="20.0" /></BorderPane.margin>
+        </HBox>
+        
+    </center>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</BorderPane>
