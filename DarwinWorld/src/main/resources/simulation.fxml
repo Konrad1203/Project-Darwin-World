@@ -13,7 +13,7 @@
             <VBox>
 
                 <VBox alignment="TOP_CENTER">
-                    <Label text="Simulation statistics" styleClass="title"/>
+                    <Label styleClass="title" text="Simulation statistics" />
                     <HBox><Label text="Simulation day:  " /><Label fx:id="day" /></HBox>
                     <HBox><Label text="Animals number:  " /><Label fx:id="animalCount" /></HBox>
                     <HBox><Label text="Dead animals number:  " /><Label fx:id="deadAnimalCount" /></HBox>
@@ -25,8 +25,8 @@
                     <HBox><Label text="Average children number:  " /><Label fx:id="averageChildrenCount" /></HBox>
                 <VBox.margin><Insets top="5.0" /></VBox.margin></VBox>
 
-                <VBox fx:id="animalStats" visible="false" alignment="TOP_CENTER">
-                    <Label text="Tracked animal statistics" styleClass="title">
+                <VBox fx:id="animalStats" alignment="TOP_CENTER" visible="false">
+                    <Label styleClass="title" text="Tracked animal statistics">
                         <VBox.margin><Insets top="20.0" /></VBox.margin>
                     </Label>
                     <HBox><Label text="Genome:  " /><Label fx:id="genome" /></HBox>
@@ -36,7 +36,7 @@
                     <HBox><Label text="Children number:  " /><Label fx:id="childrenCount" /></HBox>
                     <HBox><Label text="Descendants number:  " /><Label fx:id="descendantsCount" /></HBox>
                     <HBox><Label text="Days survived:  " /><Label fx:id="daysSurvived" /></HBox>
-                    <HBox><Label text="Day of death:  " /><Label fx:id="deathDay" /></HBox>
+                    <HBox><Label text="Dead:  " /><Label fx:id="deathDay" /></HBox>
                     <HBox alignment="BASELINE_CENTER" spacing="10">
                         <VBox.margin><Insets top="10.0" /></VBox.margin>
                         <Button fx:id="startTrackButton" text="Start tracking" />
@@ -56,13 +56,24 @@
 
             </VBox>
 
-            <VBox alignment="TOP_CENTER">
-                <Button fx:id="stopStartButton" prefHeight="30.0" prefWidth="200.0" style="-fx-graphic: url('icons/pause24.png');" text="STOP">
-                    <VBox.margin><Insets bottom="20.0" /></VBox.margin>
-                </Button>
-                <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true">
-                    <BorderPane.margin><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></BorderPane.margin>
-                </GridPane>
+            <VBox>
+                <HBox alignment="TOP_CENTER" spacing="15">
+                    <Button fx:id="stopStartButton" prefHeight="38.0" prefWidth="200.0" style="-fx-graphic: url('icons/pause24.png');" text="STOP" />
+                    <Button fx:id="plantGridButton" onAction="#printPlantGrid" prefHeight="38.0" prefWidth="120.0" text="Show plant grid" disable="true" />
+                    <Button fx:id="animalWithPopularGenome" onAction="#printAnimalsWithPopularGenome" prefHeight="38.0" prefWidth="240.0" text="Show animals with popular genome" disable="true" />
+                <VBox.margin><Insets bottom="20.0" /></VBox.margin></HBox>
+
+
+                <StackPane>
+                    <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true">
+                        <BorderPane.margin><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></BorderPane.margin>
+                    </GridPane>
+
+                    <GridPane fx:id="plantGrid" alignment="CENTER" gridLinesVisible="true" visible="false">
+                        <BorderPane.margin><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></BorderPane.margin>
+                    </GridPane>
+                </StackPane>
+
             </VBox>
 
          <BorderPane.margin><Insets bottom="10.0" left="20.0" right="20.0" top="20.0" /></BorderPane.margin>

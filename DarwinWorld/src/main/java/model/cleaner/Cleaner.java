@@ -26,7 +26,7 @@ public class Cleaner {
                 animalGrid.get(animal.getPosition()).remove(animal);
                 deadAnimalList.add(animal);
                 makeAdditionalThings(animal);
-                animal.setDeadDay(simulation.getDay());
+                animal.setDead();
                 return true;
             } else return false;
         });

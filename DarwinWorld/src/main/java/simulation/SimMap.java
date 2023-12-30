@@ -51,6 +51,10 @@ public class SimMap {
         return plantsCounter;
     }
 
+    public int getMaxPlantsCounter() {
+        return maxPlantsCounter;
+    }
+
     private void addToPlantsCounter(Position p) {
         plantsCounter[p.y()][p.x()]++;
         maxPlantsCounter = Math.max(maxPlantsCounter, plantsCounter[p.y()][p.x()]);

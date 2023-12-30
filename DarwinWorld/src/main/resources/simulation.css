@@ -1,6 +1,6 @@
 Borderpane {
 }
-#mapGrid {
+#mapGrid, #plantGrid {
     -fx-background-color: white;
     -fx-border-color: #2d2d2d;
     -fx-border-width: 2px;

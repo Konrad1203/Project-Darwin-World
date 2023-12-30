@@ -1,6 +1,8 @@
 package model.animal;
 
 import simulation.statistics.SimSettings;
+
+import java.util.Arrays;
 import java.util.Random;
 
 public class Genome {
@@ -20,7 +22,7 @@ public class Genome {
     }
 
     public int getActivePoint() {
-        return genome[activePoint%length];
+        return genome[activePoint-1];
     }
 
     public int getNext() {
@@ -34,5 +36,10 @@ public class Genome {
         for (int gen : genome) {
             genomeCounter[gen]++;
         }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(genome);
     }
 }

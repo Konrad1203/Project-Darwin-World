@@ -100,7 +100,7 @@ public class Simulation implements Runnable {
     public AnimalStats createTrackedAnimalStats(Animal a) {
         if (a != null) return new AnimalStats(a.getGenome().getGenomeList(), a.getGenome().getActivePoint(),
                 a.getEnergy(), a.getPlantsEaten(), a.getChildrenCount(), a.getDescendantsCount(),
-                a.getDaysSurvived(), a.getDeadDay());
+                a.getDaysSurvived(), a.isDead());
         else return null;
     }
 
@@ -121,7 +121,7 @@ public class Simulation implements Runnable {
         return counter;
     }
 
-    private String calculatePopularGenotype() {
+    private List<Integer> calculatePopularGenotype() {
         int[] genomeCounter = new int[8];
         for (Animal animal : map.getAnimalList()) animal.getGenome().addGenomeCountsToList(genomeCounter);
         int maxIndex = 0;
@@ -129,7 +129,7 @@ public class Simulation implements Runnable {
         List<Integer> genomes = new ArrayList<>();
         genomes.add(maxIndex);
         for (int i = maxIndex+1; i < 8; i++) if (genomeCounter[maxIndex] == genomeCounter[i]) genomes.add(i);
-        return genomes.toString();
+        return genomes;
     }
 
     private double calculateAverageEnergyCount() {

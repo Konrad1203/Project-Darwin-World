@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.UUID;
 
-public record SimStats(int day, int animalCount, int deadAnimalCount, int plantCount, int freeFieldCount, String popularGenotype,
+public record SimStats(int day, int animalCount, int deadAnimalCount, int plantCount, int freeFieldCount, List<Integer> popularGenotype,
                        double averageEnergyCount, double averageLifeSpan, double averageChildrenCount) {
 
     private static final char p = ';';

@@ -46,7 +46,7 @@
 
                    <Label text="Plants grow over day" />
                    <Spinner fx:id="dailyPlantsGrowCount" editable="true" promptText="Enter number">
-                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="1" /></valueFactory>
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="2" /></valueFactory>
                        <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
                    </Spinner>
 
@@ -58,7 +58,7 @@
 
                    <Label text="Required energy to be full" />
                    <Spinner fx:id="fullEnergyCount" editable="true" promptText="Enter number">
-                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="0" /></valueFactory>
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="5" /></valueFactory>
                        <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
                    </Spinner>
 
@@ -156,7 +156,7 @@
             </VBox>
 
            <HBox style="-fx-alignment: center">
-               <Button fx:id="runSimulationButton" alignment="CENTER" contentDisplay="CENTER" onAction="#runSimulation" prefHeight="30.0" prefWidth="180.0" text="Run simulation">
+               <Button fx:id="runSimulationButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="180.0" text="Run simulation">
                    <font><Font size="14.0" /></font>
                </Button>
                <VBox.margin><Insets top="25" /></VBox.margin>

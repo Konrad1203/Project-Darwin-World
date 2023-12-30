@@ -16,7 +16,7 @@ public class Animal implements Comparable<Animal> {
     private final List<Animal> children = new ArrayList<>();
     private int daysSurvived = 0;
     private int plantsEaten = 0;
-    private int deadDay;
+    private boolean isDead = false;
     private final UUID uuid = UUID.randomUUID();
     private final SimSettings settings;
 
@@ -57,12 +57,12 @@ public class Animal implements Comparable<Animal> {
         return plantsEaten;
     }
 
-    public int getDeadDay() {
-        return deadDay;
+    public boolean isDead() {
+        return isDead;
     }
 
-    public void setDeadDay(int day) {
-        deadDay = day;
+    public void setDead() {
+        isDead = true;
     }
 
     public void consumePlant() {
