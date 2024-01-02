@@ -4,14 +4,13 @@ import simulation.SimMap;
 import model.animal.Animal;
 import model.planter.Planter;
 import model.planter.PlanterOnDead;
-import simulation.Simulation;
 
 public class CleanerOnDead extends Cleaner {
 
     private final PlanterOnDead planter;
 
-    public CleanerOnDead(SimMap map, Simulation simulation, Planter planter) {
-        super(map, simulation);
+    public CleanerOnDead(SimMap map, Planter planter) {
+        super(map);
         this.planter = (PlanterOnDead) planter;
     }
 

@@ -12,6 +12,10 @@ public class GenomeBackAndForth extends Genome {
         super(settings, random);
     }
 
+    public GenomeBackAndForth(SimSettings settings, Random random, int[] genomeList) {
+        super(settings, random, genomeList);
+    }
+
     @Override
     public int getActivePoint() {
         return genome[readingDirection ? activePoint-1 : length-activePoint];

@@ -4,6 +4,7 @@ import GUI.SimPresenter;
 import model.animal.Animal;
 import model.cleaner.Cleaner;
 import model.cleaner.CleanerOnDead;
+import model.copulator.Copulator;
 import model.feeder.Feeder;
 import model.planter.Planter;
 import model.planter.PlanterEquator;
@@ -24,6 +25,7 @@ public class Simulation implements Runnable {
     private final Planter planter;
     private final Feeder feeder;
     private final Cleaner cleaner;
+    private final Copulator copulator;
     private Animal trackedAnimal;
     private boolean ableToRun = true;
     private final Object lock = new Object();
@@ -41,20 +43,21 @@ public class Simulation implements Runnable {
         if (settings.plantsGrowVariant().equals("Equator")) {
 
             planter = new PlanterEquator(settings, map, random);
-            cleaner = new Cleaner(map, this);
+            cleaner = new Cleaner(map);
 
         } else if (settings.plantsGrowVariant().equals("On dead animals")) {
 
             planter = new PlanterOnDead(settings, map, random);
-            cleaner = new CleanerOnDead(map, this, planter);
+            cleaner = new CleanerOnDead(map, planter);
 
         } else throw new IllegalArgumentException("Wrong argument: %s".formatted(settings.plantsGrowVariant()));
 
         feeder = new Feeder(map, planter);
+        copulator = new Copulator(settings, map, random);
 
         planter.spawnStartPlants();
         map.spawnStartAnimals(random);
-
+        map.getAnimalGrid().sortAnimals();
         updatePresenter();
     }
 
@@ -70,19 +73,18 @@ public class Simulation implements Runnable {
             day++;
             map.moveAnimals();
             cleaner.clean();
+            map.getAnimalGrid().sortAnimals();
             feeder.plantEating();
-            //Copulation
+            copulator.breedAnimals();
             planter.spawnPlants();
             updatePresenter();
+            int howBad = getAnimalGridSize() - map.getAnimalList().size();
+            if (howBad != 0) System.out.print(howBad + " ");
         }
     }
 
     public UUID getID() {
         return uuid;
-    }
-
-    public int getDay() {
-        return day;
     }
 
     public Optional<Animal> getTrackedAnimal() {
@@ -171,5 +173,13 @@ public class Simulation implements Runnable {
         int maxEnergy = 0;
         for (Animal animal : map.getAnimalList()) maxEnergy = Math.max(maxEnergy, animal.getEnergy());
         return maxEnergy;
+    }
+
+    private int getAnimalGridSize() {
+        int counter = 0;
+        for (List<Animal> animalList : map.getAnimalGrid()) {
+            counter += animalList.size();
+        }
+        return counter;
     }
 }

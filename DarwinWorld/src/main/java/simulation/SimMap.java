@@ -61,7 +61,7 @@ public class SimMap {
     }
 
     public Animal animalAt(Position position) {
-        if (!animalGrid.get(position).isEmpty()) return animalGrid.get(position).first();
+        if (!animalGrid.get(position).isEmpty()) return animalGrid.get(position).get(0);
         return null;
     }
 
@@ -87,6 +87,13 @@ public class SimMap {
     public void spawnStartAnimals(Random random) {
         for (int i = 0; i < settings.startAnimalsCount(); i++) {
             Animal animal = new Animal(settings, random);
+            animalGrid.get(animal.getPosition()).add(animal);
+            animalList.add(animal);
+        }
+    }
+
+    public void spawnAnimalsFromList(List<Animal> animals) {
+        for (Animal animal : animals) {
             animalGrid.get(animal.getPosition()).add(animal);
             animalList.add(animal);
         }

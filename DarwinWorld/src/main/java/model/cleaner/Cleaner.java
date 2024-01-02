@@ -11,38 +11,26 @@ public class Cleaner {
     private final List<Animal> animalList;
     private final AnimalGrid animalGrid;
     private final List<Animal> deadAnimalList;
-    private final Simulation simulation;
 
-    public Cleaner(SimMap map, Simulation simulation) {
+    public Cleaner(SimMap map) {
         animalList = map.getAnimalList();
         animalGrid = map.getAnimalGrid();
         deadAnimalList = map.getDeadAnimalList();
-        this.simulation = simulation;
     }
 
     public void clean() {
         animalList.removeIf(animal -> {
-            if (animal.getEnergy() == 0) {
+            if (animal.getEnergy() <= 0) {
+                int before = animalGrid.get(animal.getPosition()).size();
                 animalGrid.get(animal.getPosition()).remove(animal);
+                int after = animalGrid.get(animal.getPosition()).size();
+                if (before - after != 1) System.out.println("nie usunięty");
                 deadAnimalList.add(animal);
                 makeAdditionalThings(animal);
                 animal.setDead();
                 return true;
             } else return false;
         });
-        /*
-        Iterator<Animal> iterator = animalList.iterator();
-        while (iterator.hasNext()) {
-            Animal animal = iterator.next();
-            if (animal.getEnergy() == 0) {
-                animalGrid.get(animal.getPosition()).remove(animal);
-                deadAnimalList.add(animal);
-                makeAdditionalThings(animal);
-                iterator.remove();
-            }
-        }
-
-         */
     }
 
     protected void makeAdditionalThings(Animal animal) {}

@@ -25,8 +25,18 @@ public class Animal implements Comparable<Animal> {
         position = new Position(random.nextInt(settings.width()), random.nextInt(settings.height()));
         orientation = Orientation.getOrientationFromNumber(random.nextInt(8));
         energy = settings.startEnergyCount();
-        if ( settings.genomeVariant().equals("Back and forth") ) genome = new GenomeBackAndForth(settings, random);
+        if (settings.genomeVariant().equals("Back and forth")) genome = new GenomeBackAndForth(settings, random);
         else genome = new Genome(settings, random);
+    }
+
+    public Animal(SimSettings settings, Random random, Position position, int[] genomeList) {
+        this.settings = settings;
+        this.position = position;
+        orientation = Orientation.getOrientationFromNumber(random.nextInt(8));
+        energy = settings.energyLossToCopulate() * 2;
+        if (settings.genomeVariant().equals("Back and forth")) genome = new GenomeBackAndForth(settings, random, genomeList);
+        else genome = new Genome(settings, random, genomeList);
+        this.genome.mutate();
     }
 
     public Position getPosition() {
@@ -35,10 +45,6 @@ public class Animal implements Comparable<Animal> {
 
     public int getEnergy() {
         return this.energy;
-    }
-
-    public UUID getID() {
-        return uuid;
     }
 
     public Genome getGenome() {
@@ -70,6 +76,14 @@ public class Animal implements Comparable<Animal> {
         plantsEaten++;
     }
 
+    public void loseEnergyFromCopulation() {
+        energy -= settings.energyLossToCopulate();
+    }
+
+    public void addChild(Animal child) {
+        children.add(child);
+    }
+
     public void move(SimMap validator) {
         orientation = orientation.rotate(genome.getNext());
         Position tempPos = position.add(orientation.toVector());
@@ -96,7 +110,7 @@ public class Animal implements Comparable<Animal> {
         if (this.energy == o.energy) {
             if (this.daysSurvived == o.daysSurvived) {
                 if (this.children.size() == o.children.size()) {
-                    return o.uuid.compareTo(uuid);
+                    return o.uuid.compareTo(this.uuid);
                 } else return o.children.size() - this.children.size();
             } else return o.daysSurvived - this.daysSurvived;
         } else return o.energy - this.energy;

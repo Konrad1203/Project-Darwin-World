@@ -216,11 +216,11 @@ public class SimPresenter {
         Circle animalCircle;
         if (simulation.getTrackedAnimal().isPresent() && pos.equals(simulation.getTrackedAnimal().get().getPosition())) {
             animal = simulation.getTrackedAnimal().get();
-            animalCircle = new Circle(27*scale, Color.hsb(16, animal.getEnergy()/maxEnergy, 0.96));
+            animalCircle = new Circle(27*scale, Color.hsb(16, Math.min(1,animal.getEnergy()/maxEnergy), 0.96));
         }
         else {
             animal = map.animalAt(pos);
-            animalCircle = new Circle(27*scale, Color.hsb(165, animal.getEnergy()/maxEnergy, 0.87));
+            animalCircle = new Circle(27*scale, Color.hsb(165, Math.min(1,animal.getEnergy()/maxEnergy), 0.87));
         }
         Text text = new Text(animal.toString());
         text.setFont(font);

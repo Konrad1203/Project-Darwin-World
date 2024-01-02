@@ -8,98 +8,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-public class AnimalGrid implements Iterable<TreeSet<Animal>> {
+public class AnimalGrid implements Iterable<List<Animal>> {
 
-    private final List<List<TreeSet<Animal>>> animals;
-    private final int rows;
+    private final List<List<Animal>> animals;
     private final int cols;
 
     public AnimalGrid(SimSettings settings) {
-        rows = settings.height();
         cols = settings.width();
-        animals = new ArrayList<>(rows);
+        int size = settings.height() * cols;
+        animals = new ArrayList<>(size);
 
-        for (int i = 0; i < rows; i++) {
-            List<TreeSet<Animal>> rowList = new ArrayList<>(cols);
-            for (int j = 0; j < cols; j++) {
-                rowList.add(new TreeSet<>());
-            }
-            animals.add(rowList);
+        for (int i = 0; i < size; i++) {
+            animals.add(new ArrayList<>());
         }
     }
 
-    public TreeSet<Animal> get(Position position) {
-        return animals.get(position.y()).get(position.x());
+    public List<Animal> get(Position pos) {
+        return animals.get(pos.y() * cols + pos.x());
     }
 
-    @Override
-    public Iterator<TreeSet<Animal>> iterator() {
-        return new Iterator<>() {
-            private int currentRow = 0;
-            private int currentColumn = 0;
-
-            @Override
-            public boolean hasNext() {
-                return currentRow < rows && currentColumn < cols;
-            }
-
-            @Override
-            public TreeSet<Animal> next() {
-                TreeSet<Animal> currentSet = animals.get(currentRow).get(currentColumn++);
-                if (currentColumn >= cols) {
-                    currentColumn = 0;
-                    currentRow++;
-                }
-                return currentSet;
-            }
-        };
-    }
-}
-
-/*
-public class AnimalGrid { //implements Iterable<TreeSet<Animal>> {
-
-    private final TreeSet<Animal>[][] animals;
-    private final int rows;
-    private final int cols;
-
-    public AnimalGrid(SimSettings settings) {
-        rows = settings.height();
-        cols = settings.width();
-        animals = new TreeSet[rows][cols];
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                animals[i][j] = new TreeSet<>();
-            }
+    public void sortAnimals() {
+        for (List<Animal> animalList : animals) {
+            animalList.sort(Animal::compareTo);
         }
     }
 
-    public TreeSet<Animal> get(Position position) {
-        return animals[position.y()][position.x()];
-    }
-
     @Override
-    public Iterator<TreeSet<Animal>> iterator() {
-        return new Iterator<>() {
-            private int currentRow = 0;
-            private int currentColumn = 0;
-
-            @Override
-            public boolean hasNext() {
-                return currentRow < rows && currentColumn < cols;
-            }
-
-            @Override
-            public TreeSet<Animal> next() {
-                TreeSet<Animal> currentSet = animals[currentRow][currentColumn++];
-                if (currentColumn >= cols) {
-                    currentColumn = 0;
-                    currentRow++;
-                }
-                return currentSet;
-            }
-        };
+    public Iterator<List<Animal>> iterator() {
+        return animals.iterator();
     }
 }
-*/

@@ -1,5 +1,6 @@
 package model.feeder;
 
+import model.animal.Animal;
 import simulation.SimMap;
 import model.planter.Planter;
 import model.utilities.Position;
@@ -21,7 +22,7 @@ public class Feeder {
         while (iterator.hasNext()) {
             Position pos = iterator.next();
             if (!map.getAnimalGrid().get(pos).isEmpty()) {
-                map.getAnimalGrid().get(pos).first().consumePlant();
+                map.getAnimalGrid().get(pos).get(0).consumePlant();
                 iterator.remove();
                 planter.returnPosition(pos);
             }
