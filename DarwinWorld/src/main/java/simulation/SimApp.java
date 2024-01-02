@@ -7,14 +7,17 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-import simulation.GUI.SimPresenter;
-import simulation.GUI.StartPresenter;
-import simulation.model.SimSettings;
-import simulation.model.SimulationMap;
+import GUI.StartPresenter;
+import simulation.statistics.SimSettings;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
 
-public class SimulationApp extends Application {
+import static java.util.concurrent.Executors.newFixedThreadPool;
+
+public class SimApp extends Application {
+
+    ExecutorService executor = newFixedThreadPool(4);
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -25,20 +28,24 @@ public class SimulationApp extends Application {
         primaryStage.show();
         StartPresenter presenter = loader.getController();
         presenter.setSimApp(this);
+        primaryStage.setOnCloseRequest(event -> executor.shutdown());
     }
 
-    public void buildSimulation(SimSettings settings) throws IOException, InterruptedException {
+    public void buildSimulationStage(SimSettings settings) throws IOException, InterruptedException {
         Stage simStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         Parent root = loader.load();
         configureStage(simStage, root, "Simulation app");
-        SimPresenter presenter = loader.getController();
-        presenter.setSimSettings(settings);
         simStage.show();
 
-        SimulationMap map = new SimulationMap(settings, presenter);
-        presenter.printMap(map);
+        Simulation simulation = new Simulation(settings, loader.getController());
+        executor.submit(simulation);
+
+        simStage.setOnCloseRequest(event -> {
+            if (simulation.isPaused()) simulation.pauseAnimation();
+            simulation.stop();
+        });
     }
 
     private void configureStage(Stage stage, Parent root, String name) {

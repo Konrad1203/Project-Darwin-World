@@ -1,4 +1,4 @@
-package simulation.model.util;
+package model.utilities;
 
 public record Position(int x, int y) {
 

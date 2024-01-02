@@ -1,9 +1,9 @@
-package simulation.model.animal;
+package model.animal;
 
-import simulation.model.SimSettings;
-import simulation.model.SimulationMap;
-import simulation.model.util.Orientation;
-import simulation.model.util.Position;
+import simulation.statistics.SimSettings;
+import simulation.SimMap;
+import model.utilities.Orientation;
+import model.utilities.Position;
 
 import java.util.*;
 
@@ -15,6 +15,8 @@ public class Animal implements Comparable<Animal> {
     private int energy;
     private final List<Animal> children = new ArrayList<>();
     private int daysSurvived = 0;
+    private int plantsEaten = 0;
+    private boolean isDead = false;
     private final UUID uuid = UUID.randomUUID();
     private final SimSettings settings;
 
@@ -35,11 +37,40 @@ public class Animal implements Comparable<Animal> {
         return this.energy;
     }
 
-    public void consumePlant() {
-        energy += settings.energyFromPlant();
+    public UUID getID() {
+        return uuid;
     }
 
-    public void move(SimulationMap validator) {
+    public Genome getGenome() {
+        return genome;
+    }
+
+    public int getDaysSurvived() {
+        return daysSurvived;
+    }
+
+    public int getChildrenCount() {
+        return children.size();
+    }
+
+    public int getPlantsEaten() {
+        return plantsEaten;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead() {
+        isDead = true;
+    }
+
+    public void consumePlant() {
+        energy += settings.energyFromPlant();
+        plantsEaten++;
+    }
+
+    public void move(SimMap validator) {
         orientation = orientation.rotate(genome.getNext());
         Position tempPos = position.add(orientation.toVector());
         if (validator.canMoveTo(this, tempPos)) position = tempPos;
@@ -52,7 +83,7 @@ public class Animal implements Comparable<Animal> {
     }
 
     public void boundFromPole() {
-        orientation = orientation.reflection();
+        orientation = orientation.rotate(4);
     }
 
     @Override
@@ -76,5 +107,15 @@ public class Animal implements Comparable<Animal> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         return uuid.compareTo(((Animal) o).uuid) == 0;
+    }
+
+    public int getDescendantsCount() {
+        int counter = 0;
+        for (Animal child : children) {
+            counter++;
+            counter += child.getChildrenCount();
+        }
+
+        return counter;
     }
 }

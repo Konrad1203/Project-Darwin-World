@@ -1,6 +1,6 @@
-package simulation.GUI;
+package GUI;
 
-import simulation.model.SimSettings;
+import simulation.statistics.SimSettings;
 import java.io.*;
 import java.util.Map;
 

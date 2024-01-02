@@ -1,7 +1,7 @@
-package simulation.GUI;
+package GUI;
 
-import simulation.model.SimSettings;
-import simulation.SimulationApp;
+import simulation.statistics.SimSettings;
+import simulation.SimApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -13,31 +13,50 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StartPresenter {
 
-    public ComboBox<String> presetOption;
-    public Spinner<Integer> height;
-    public Spinner<Integer> width;
-    public Spinner<Integer> startPlantsCount;
-    public Spinner<Integer> energyFromPlant;
-    public Spinner<Integer> dailyPlantsGrowCount;
-    public ComboBox<String> plantsGrowVariant;
-    public Spinner<Integer> startAnimalsCount;
-    public Spinner<Integer> startEnergyCount;
-    public Spinner<Integer> fullEnergyCount;
-    public Spinner<Integer> energyLossToCopulate;
-    public Spinner<Integer> genomeLength;
-    public ComboBox<String> genomeVariant;
-    public Spinner<Integer> minMutationCount;
-    public Spinner<Integer> maxMutationCount;
-    public ComboBox<String> mutationVariant;
-    public Spinner<Integer> frameTime;
-    public CheckBox saveStats;
-    public Button runSimulationButton;
+    @FXML
+    private ComboBox<String> presetOption;
+    @FXML
+    private Spinner<Integer> height;
+    @FXML
+    private Spinner<Integer> width;
+    @FXML
+    private Spinner<Integer> startPlantsCount;
+    @FXML
+    private Spinner<Integer> energyFromPlant;
+    @FXML
+    private Spinner<Integer> dailyPlantsGrowCount;
+    @FXML
+    private ComboBox<String> plantsGrowVariant;
+    @FXML
+    private Spinner<Integer> startAnimalsCount;
+    @FXML
+    private Spinner<Integer> startEnergyCount;
+    @FXML
+    private Spinner<Integer> fullEnergyCount;
+    @FXML
+    private Spinner<Integer> energyLossToCopulate;
+    @FXML
+    private Spinner<Integer> genomeLength;
+    @FXML
+    private ComboBox<String> genomeVariant;
+    @FXML
+    private Spinner<Integer> minMutationCount;
+    @FXML
+    private Spinner<Integer> maxMutationCount;
+    @FXML
+    private ComboBox<String> mutationVariant;
+    @FXML
+    private Spinner<Integer> frameTime;
+    @FXML
+    private CheckBox saveStats;
+    @FXML
+    private Button runSimulationButton;
 
-    private SimulationApp simApp;
+    private SimApp simApp;
     private Map<String, SimSettings> dataMap;
     private final String filename = "preset.data";
 
-    public void setSimApp(SimulationApp simApp) {
+    public void setSimApp(SimApp simApp) {
         this.simApp = simApp;
     }
 
@@ -46,16 +65,27 @@ public class StartPresenter {
         setTextFieldsToNumbers();
         refreshPresetsList();
         loadSettings();
+
+        runSimulationButton.setOnAction(event -> {
+            if (checkTextFieldsValues()) {
+                try { simApp.buildSimulationStage(createSettings()); }
+                catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
-    public void loadSettings() {
+    @FXML
+    private void loadSettings() {
         Map<String, SimSettings> dataMap = MapToFile.deserializeMapFromFile(filename);
         SimSettings preset = dataMap.get(presetOption.getSelectionModel().getSelectedItem());
         if (preset != null) fillTextFieldWithPreset(preset);
         else createAndShowAlert(Alert.AlertType.ERROR, "Loading preset error", "You cannot load not existing preset");
     }
 
-    public void refreshPresetsList() {
+    @FXML
+    private void refreshPresetsList() {
         if (!Files.exists(Path.of(filename))) putStandardSetting();
         this.dataMap = MapToFile.deserializeMapFromFile(filename);
         List<String> presetNames = new ArrayList<>(dataMap.keySet());
@@ -65,7 +95,8 @@ public class StartPresenter {
         presetOption.getSelectionModel().select("Standard");
     }
 
-    public void savePreset() {
+    @FXML
+    private void savePreset() {
         String presetName = presetOption.getSelectionModel().getSelectedItem();
         if (presetName.equals("Standard")) createAndShowAlert(Alert.AlertType.ERROR, "Saving preset error", "You cannot overwrite Standard preset");
         else if (presetName.isEmpty())  createAndShowAlert(Alert.AlertType.ERROR, "Saving preset error", "You cannot create preset without name");
@@ -89,7 +120,8 @@ public class StartPresenter {
         );
     }
 
-    public void removePreset() {
+    @FXML
+    private void removePreset() {
         String presetName = presetOption.getSelectionModel().getSelectedItem();
         if (presetName.equals("Standard")) {
             createAndShowAlert(Alert.AlertType.ERROR, "Removing preset error", "You cannot remove Standard preset");
@@ -104,7 +136,8 @@ public class StartPresenter {
         }
     }
 
-    public void renamePreset() {
+    @FXML
+    private void renamePreset() {
         String presetOldName = presetOption.getSelectionModel().getSelectedItem();
         if (presetOldName.equals("Standard")) {
             createAndShowAlert(Alert.AlertType.WARNING, "Renaming preset error", "You cannot rename Standard preset.");
@@ -127,16 +160,9 @@ public class StartPresenter {
         }
     }
 
-    public void putStandardSetting() {
-        SimSettings settings = new SimSettings(
-                10,10,
-                10,15,3,"Equator",
-                10,20,15,10,
-                0,3,"Standard",
-                10,"Standard", false, 500);
-
+    private void putStandardSetting() {
         Map<String, SimSettings> dataMap = new HashMap<>();
-        dataMap.put("Standard", settings);
+        dataMap.put("Standard", SimSettings.STANDARD_SETTINGS);
         MapToFile.serializeMapToFile(dataMap, filename);
     }
 
@@ -215,14 +241,5 @@ public class StartPresenter {
             change.setText(change.getText().replaceAll("\\D", ""));
             return change;
         });
-    }
-
-    public void runSimulation() {
-        if (checkTextFieldsValues()) {
-            try { simApp.buildSimulation(createSettings()); }
-            catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 }

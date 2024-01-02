@@ -1,6 +1,8 @@
-package simulation.model.animal;
+package model.animal;
 
-import simulation.model.SimSettings;
+import simulation.statistics.SimSettings;
+
+import java.util.Arrays;
 import java.util.Random;
 
 public class Genome {
@@ -13,7 +15,14 @@ public class Genome {
         length = settings.genomeLength();
         genome = random.ints(length, 0, 8).toArray();
         activePoint = random.nextInt(length);
+    }
 
+    public int[] getGenomeList() {
+        return genome;
+    }
+
+    public int getActivePoint() {
+        return genome[activePoint-1];
     }
 
     public int getNext() {
@@ -21,5 +30,16 @@ public class Genome {
         int gen = genome[activePoint];
         activePoint++;
         return gen;
+    }
+
+    public void addGenomeCountsToList(int[] genomeCounter) {
+        for (int gen : genome) {
+            genomeCounter[gen]++;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(genome);
     }
 }
