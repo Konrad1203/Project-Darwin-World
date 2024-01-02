@@ -78,8 +78,6 @@ public class Simulation implements Runnable {
             copulator.breedAnimals();
             planter.spawnPlants();
             updatePresenter();
-            int howBad = getAnimalGridSize() - map.getAnimalList().size();
-            if (howBad != 0) System.out.print(howBad + " ");
         }
     }
 
@@ -173,13 +171,5 @@ public class Simulation implements Runnable {
         int maxEnergy = 0;
         for (Animal animal : map.getAnimalList()) maxEnergy = Math.max(maxEnergy, animal.getEnergy());
         return maxEnergy;
-    }
-
-    private int getAnimalGridSize() {
-        int counter = 0;
-        for (List<Animal> animalList : map.getAnimalGrid()) {
-            counter += animalList.size();
-        }
-        return counter;
     }
 }

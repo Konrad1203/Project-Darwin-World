@@ -21,10 +21,7 @@ public class Cleaner {
     public void clean() {
         animalList.removeIf(animal -> {
             if (animal.getEnergy() <= 0) {
-                int before = animalGrid.get(animal.getPosition()).size();
                 animalGrid.get(animal.getPosition()).remove(animal);
-                int after = animalGrid.get(animal.getPosition()).size();
-                if (before - after != 1) System.out.println("nie usunięty");
                 deadAnimalList.add(animal);
                 makeAdditionalThings(animal);
                 animal.setDead();
