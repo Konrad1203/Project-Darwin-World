@@ -34,7 +34,7 @@
                <VBox>
                    <Label text="Height" />
                    <Spinner fx:id="height" editable="true" promptText="Enter height">
-                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="5" /></valueFactory>
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="30" min="5" /></valueFactory>
                        <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
                    </Spinner>
 
@@ -71,7 +71,7 @@
                <VBox>
                    <Label text="Width" />
                    <Spinner fx:id="width" editable="true" promptText="Enter width">
-                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="10" max="100" min="5" /></valueFactory>
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="10" max="30" min="5" /></valueFactory>
                        <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
                    </Spinner>
 
