@@ -1,19 +1,17 @@
 package model.animal;
 
-import simulation.statistics.SimSettings;
-
-import java.util.Random;
+import simulation.Simulation;
 
 public class GenomeBackAndForth extends Genome {
 
     private boolean readingDirection = true;
 
-    public GenomeBackAndForth(SimSettings settings, Random random) {
-        super(settings, random);
+    public GenomeBackAndForth(Simulation simulation) {
+        super(simulation);
     }
 
-    public GenomeBackAndForth(SimSettings settings, Random random, int[] genomeList) {
-        super(settings, random, genomeList);
+    public GenomeBackAndForth(Simulation simulation, int[] genomeList) {
+        super(simulation, genomeList);
     }
 
     @Override

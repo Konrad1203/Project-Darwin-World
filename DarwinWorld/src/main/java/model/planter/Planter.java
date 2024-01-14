@@ -1,10 +1,8 @@
 package model.planter;
 
-import simulation.statistics.SimSettings;
-import simulation.SimMap;
+import simulation.Simulation;
 import model.utilities.Position;
 
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -20,15 +18,15 @@ public abstract class Planter {
     protected final int steppeCount;
 
 
-    public Planter(SimSettings settings, SimMap map, Random random) {
-        this.random = random;
-        mapPlants = map.getPlants();
-        width = settings.width();
-        height = settings.height();
-        startJungleCount = divideTo80_20(settings.startPlantsCount());
-        startSteppeCount = settings.startPlantsCount() - startJungleCount;
-        jungleCount = divideTo80_20(settings.dailyPlantsGrowCount());
-        steppeCount = settings.dailyPlantsGrowCount() - jungleCount;
+    public Planter(Simulation simulation) {
+        this.random = simulation.random;
+        mapPlants = simulation.getMap().getPlants();
+        width = simulation.settings.width();
+        height = simulation.settings.height();
+        startJungleCount = divideTo80_20(simulation.settings.startPlantsCount());
+        startSteppeCount = simulation.settings.startPlantsCount() - startJungleCount;
+        jungleCount = divideTo80_20(simulation.settings.dailyPlantsGrowCount());
+        steppeCount = simulation.settings.dailyPlantsGrowCount() - jungleCount;
     }
 
     private int divideTo80_20(int count) {
@@ -54,8 +52,6 @@ public abstract class Planter {
             for (int i = 0; i < Math.min(steppeCount+jungleCount-n, getPlantsOnSteppeSize()); i++) mapPlants.add(getPosFromSteppe());
         }
     }
-
-    public abstract List<Position> getJungleList();
 
     public void spawnPlants() {
         spawnPlants(jungleCount, steppeCount);

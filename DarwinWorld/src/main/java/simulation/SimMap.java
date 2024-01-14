@@ -3,13 +3,12 @@ package simulation;
 import model.utilities.AnimalGrid;
 import model.utilities.Position;
 import model.animal.Animal;
-import simulation.statistics.SimSettings;
 
 import java.util.*;
 
 public class SimMap {
 
-    private final SimSettings settings;
+    private final Simulation sim;
     private final AnimalGrid animalGrid;
     private final List<Animal> animalList = new LinkedList<>();
     private final Set<Position> plants = new HashSet<>() {
@@ -25,10 +24,10 @@ public class SimMap {
 
     private final List<Animal> deadAnimalList = new ArrayList<>();
 
-    public SimMap(SimSettings settings) {
-        this.settings = settings;
-        animalGrid = new AnimalGrid(settings);
-        plantsCounter = new int[settings.height()][settings.width()];
+    public SimMap(Simulation simulation) {
+        sim = simulation;
+        animalGrid = new AnimalGrid(sim.settings);
+        plantsCounter = new int[sim.settings.height()][sim.settings.width()];
     }
 
     public AnimalGrid getAnimalGrid() {
@@ -61,7 +60,9 @@ public class SimMap {
     }
 
     public Animal animalAt(Position position) {
-        if (!animalGrid.get(position).isEmpty()) return animalGrid.get(position).get(0);
+        if (!animalGrid.get(position).isEmpty()) {
+            return animalGrid.get(position).stream().max(Comparator.comparing(Animal::getEnergy)).orElse(null);
+        }
         return null;
     }
 
@@ -74,19 +75,19 @@ public class SimMap {
     }
 
     public boolean canMoveTo(Animal animal, Position position) {
-        if (position.y() < 0 || position.y() >= settings.height()) {
+        if (position.y() < 0 || position.y() >= sim.settings.height()) {
             animal.boundFromPole();
             return false;
-        } else if (position.x() < 0 || position.x() >= settings.width()) {
+        } else if (position.x() < 0 || position.x() >= sim.settings.width()) {
             animal.moveToOtherSide(position);
             return false;
         }
         return true;
     }
 
-    public void spawnStartAnimals(Random random) {
-        for (int i = 0; i < settings.startAnimalsCount(); i++) {
-            Animal animal = new Animal(settings, random);
+    public void spawnStartAnimals() {
+        for (int i = 0; i < sim.settings.startAnimalsCount(); i++) {
+            Animal animal = new Animal(sim);
             animalGrid.get(animal.getPosition()).add(animal);
             animalList.add(animal);
         }
@@ -110,8 +111,8 @@ public class SimMap {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < settings.height(); i++) {
-            for (int j = 0; j < settings.width(); j++) {
+        for (int i = 0; i < sim.settings.height(); i++) {
+            for (int j = 0; j < sim.settings.width(); j++) {
                 Position position = new Position(j, i);
                 if ( isAnimal(position) ) result.append( "%s ".formatted( animalAt(position) ) );
                 else if ( isPlant(position) ) result.append("w ");

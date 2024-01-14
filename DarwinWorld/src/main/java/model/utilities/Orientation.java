@@ -18,10 +18,6 @@ public enum Orientation {
         this.vector = vector;
     }
 
-    public int toNumber() {
-        return this.value;
-    }
-
     public Position toVector() {
         return this.vector;
     }

@@ -3,7 +3,6 @@ package model.cleaner;
 import simulation.SimMap;
 import model.animal.Animal;
 import model.utilities.AnimalGrid;
-import simulation.Simulation;
 import java.util.List;
 
 public class Cleaner {

@@ -1,5 +1,6 @@
 package model.animal;
 
+import simulation.Simulation;
 import simulation.statistics.SimSettings;
 import simulation.SimMap;
 import model.utilities.Orientation;
@@ -9,6 +10,8 @@ import java.util.*;
 
 public class Animal implements Comparable<Animal> {
 
+    private final Simulation sim;
+    private final UUID uuid = UUID.randomUUID();
     private Position position;
     private Orientation orientation;
     private final Genome genome;
@@ -17,26 +20,22 @@ public class Animal implements Comparable<Animal> {
     private int daysSurvived = 0;
     private int plantsEaten = 0;
     private boolean isDead = false;
-    private final UUID uuid = UUID.randomUUID();
-    private final SimSettings settings;
 
-    public Animal(SimSettings settings, Random random) {
-        this.settings = settings;
-        position = new Position(random.nextInt(settings.width()), random.nextInt(settings.height()));
-        orientation = Orientation.getOrientationFromNumber(random.nextInt(8));
-        energy = settings.startEnergyCount();
-        if (settings.genomeVariant().equals("Back and forth")) genome = new GenomeBackAndForth(settings, random);
-        else genome = new Genome(settings, random);
+    public Animal(Simulation simulation) {
+        sim = simulation;
+        position = new Position(sim.random.nextInt(sim.settings.width()), sim.random.nextInt(sim.settings.height()));
+        orientation = Orientation.getOrientationFromNumber(sim.random.nextInt(8));
+        energy = sim.settings.startEnergyCount();
+        genome = sim.genomeFactory.createGenome();
     }
 
-    public Animal(SimSettings settings, Random random, Position position, int[] genomeList) {
-        this.settings = settings;
+    public Animal(Simulation simulation, Position position, int[] genomeList) {
+        sim = simulation;
         this.position = position;
-        orientation = Orientation.getOrientationFromNumber(random.nextInt(8));
-        energy = settings.energyLossToCopulate() * 2;
-        if (settings.genomeVariant().equals("Back and forth")) genome = new GenomeBackAndForth(settings, random, genomeList);
-        else genome = new Genome(settings, random, genomeList);
-        this.genome.mutate();
+        orientation = Orientation.getOrientationFromNumber(sim.random.nextInt(8));
+        energy = sim.settings.energyLossToCopulate() * 2;
+        genome = sim.genomeFactory.createGenome(genomeList);
+        genome.mutate();
     }
 
     public Position getPosition() {
@@ -72,15 +71,12 @@ public class Animal implements Comparable<Animal> {
     }
 
     public void consumePlant() {
-        energy += settings.energyFromPlant();
+        energy += sim.settings.energyFromPlant();
         plantsEaten++;
     }
 
-    public void loseEnergyFromCopulation() {
-        energy -= settings.energyLossToCopulate();
-    }
-
-    public void addChild(Animal child) {
+    public void processCopulation(Animal child) {
+        energy -= sim.settings.energyLossToCopulate();
         children.add(child);
     }
 
@@ -92,7 +88,7 @@ public class Animal implements Comparable<Animal> {
     }
 
     public void moveToOtherSide(Position tempPos) {
-        if (tempPos.x() < 0) position = new Position(settings.width()-1, tempPos.y());
+        if (tempPos.x() < 0) position = new Position(sim.settings.width()-1, tempPos.y());
         else position = new Position(0, tempPos.y());
     }
 

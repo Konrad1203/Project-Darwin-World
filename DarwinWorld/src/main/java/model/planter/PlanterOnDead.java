@@ -1,7 +1,6 @@
 package model.planter;
 
-import simulation.statistics.SimSettings;
-import simulation.SimMap;
+import simulation.Simulation;
 import model.utilities.Position;
 
 import java.util.*;
@@ -14,8 +13,8 @@ public class PlanterOnDead extends Planter {
     private final Set<Position> plantsOnSteppe = new HashSet<>();
     private final int[][] relationCount;
 
-    public PlanterOnDead(SimSettings settings, SimMap map, Random random) {
-        super(settings, map, random);
+    public PlanterOnDead(Simulation simulation) {
+        super(simulation);
 
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -50,7 +49,7 @@ public class PlanterOnDead extends Planter {
 
     public void addToDeadList(Position pos) {
         deadList.addLast(pos);
-        deadListCount.addLast(30);
+        deadListCount.addLast(10);
 
         for (int x = Math.max(pos.x()-1,0); x < Math.min(pos.x()+2,width); x++) {
             for (int y = Math.max(pos.y()-1,0); y < Math.min(pos.y()+2,height); y++) {
@@ -124,9 +123,5 @@ public class PlanterOnDead extends Planter {
     @Override
     public boolean isInJungle(Position pos) {
         return relationCount[pos.y()][pos.x()] > 0;
-    }
-
-    public List<Position> getJungleList() {
-        return plantsOnDead.stream().toList();
     }
 }

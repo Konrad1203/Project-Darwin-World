@@ -1,10 +1,10 @@
 package model.util;
 
 import org.junit.jupiter.api.Test;
+import simulation.Simulation;
 import simulation.statistics.SimSettings;
 import model.animal.Animal;
 
-import java.util.Random;
 import java.util.TreeSet;
 
 public class AnimalTest {
@@ -20,12 +20,12 @@ public class AnimalTest {
 
     @Test
     public void test() {
-        Random random = new Random(20);
-        set.add(new Animal(settings, random));
-        set.add(new Animal(settings, random));
-        set.add(new Animal(settings, random));
-        set.add(new Animal(settings, random));
-        set.add(new Animal(settings, random));
+        Simulation simulation = new Simulation(settings, null);
+        set.add(new Animal(simulation));
+        set.add(new Animal(simulation));
+        set.add(new Animal(simulation));
+        set.add(new Animal(simulation));
+        set.add(new Animal(simulation));
 
         System.out.printf("set: " + set + "\n");
         System.out.printf(set.first().toString());

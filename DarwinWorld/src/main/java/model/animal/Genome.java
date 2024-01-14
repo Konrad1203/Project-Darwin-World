@@ -1,48 +1,37 @@
 package model.animal;
 
-import simulation.statistics.SimSettings;
+import simulation.Simulation;
 
 import java.util.Arrays;
-import java.util.Random;
 
-public class Genome {
+public abstract class Genome {
 
+    private final Simulation sim;
     protected final int[] genome;
     protected int activePoint;
     protected final int length;
-    private final SimSettings settings;
-    private final Random random;
 
-    public Genome(SimSettings settings, Random random) {
-        this.settings = settings;
-        this.random = random;
-        length = settings.genomeLength();
-        genome = random.ints(length, 0, 8).toArray();
-        activePoint = random.nextInt(length);
+    public Genome(Simulation simulation) {
+        sim = simulation;
+        length = sim.settings.genomeLength();
+        genome = sim.random.ints(length, 0, 8).toArray();
+        activePoint = sim.random.nextInt(length);
     }
 
-    public Genome(SimSettings settings, Random random, int[] genomeList) {
-        this.settings = settings;
-        this.random = random;
-        length = settings.genomeLength();
+    public Genome(Simulation simulation, int[] genomeList) {
+        sim = simulation;
+        length = sim.settings.genomeLength();
         genome = genomeList;
-        activePoint = random.nextInt(length);
+        activePoint = sim.random.nextInt(length);
     }
 
     public int[] getGenomeList() {
         return genome;
     }
 
-    public int getActivePoint() {
-        return genome[activePoint-1];
-    }
+    public abstract int getActivePoint();
 
-    public int getNext() {
-        if (activePoint == length) activePoint = 0;
-        int gen = genome[activePoint];
-        activePoint++;
-        return gen;
-    }
+    public abstract int getNext();
 
     public void addGenomeCountsToList(int[] genomeCounter) {
         for (int gen : genome) {
@@ -51,10 +40,10 @@ public class Genome {
     }
 
     public void mutate() {
-        if (settings.mutationVariant().equals("Standard")) {
-            int mutationCount = random.nextInt(settings.minMutationCount(), settings.maxMutationCount()+1);
+        if (sim.settings.mutationVariant().equals("Standard")) {
+            int mutationCount = sim.random.nextInt(sim.settings.minMutationCount(), sim.settings.maxMutationCount()+1);
             for (int i = 0; i < mutationCount; i++) {
-                genome[random.nextInt(length)] = random.nextInt(0, 8);
+                genome[sim.random.nextInt(length)] = sim.random.nextInt(0, 8);
             }
         }
     }

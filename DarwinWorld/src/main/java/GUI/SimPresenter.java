@@ -101,14 +101,21 @@ public class SimPresenter {
     private NumberAxis chartXAxis;
 
 
-    public void setSimulation(Simulation sim) {
+    public void setupPresenter(Simulation sim) {
         simulation = sim;
         columns = sim.settings.width();
         rows = sim.settings.height();
         int cellSize = Math.min(600/rows, 600/columns);
-        mapGrid.setMaxSize(cellSize*columns,cellSize*rows);
-        this.scale = ((double)cellSize) / 60;
+        scale = ((double)cellSize) / 60;
         font = new Font(Math.round(22*scale));
+        setupButtons();
+        createGrids(cellSize);
+        createChart();
+    }
+
+    private void createGrids(int cellSize) {
+        mapGrid.setMaxSize(cellSize*columns,cellSize*rows);
+        plantGrid.setMaxSize(cellSize*columns,cellSize*rows);
         for (int col = 0; col < columns; col++) {
             mapGrid.getColumnConstraints().add(new ColumnConstraints(cellSize));
             plantGrid.getColumnConstraints().add(new ColumnConstraints(cellSize));
@@ -117,7 +124,9 @@ public class SimPresenter {
             mapGrid.getRowConstraints().add(new RowConstraints(cellSize));
             plantGrid.getRowConstraints().add(new RowConstraints(cellSize));
         }
+    }
 
+    private void setupButtons() {
         startTrackButton.setOnAction(event -> {
             simulation.setTrackedAnimal(showingStats);
             startTrackButton.setDisable(true);
@@ -136,7 +145,6 @@ public class SimPresenter {
             if (!showingAnimalsWithPopularGenome) refreshMapAtPosition(wasTracked.getPosition(), simulation.getMostEnergy());
 
         });
-        createChart();
 
         stopStartButton.setOnAction(event -> {
             if (simulation.isPaused()) {
@@ -165,8 +173,6 @@ public class SimPresenter {
             }
             simulation.pauseAnimation();
         });
-
-
     }
 
     public void update(SimMap map, Planter planter, SimStats stats, AnimalStats animalInfo) {
@@ -183,8 +189,8 @@ public class SimPresenter {
     }
 
     private void printMap() {
-        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0));
         double maxEnergy = simulation.getMostEnergy();
+        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0));
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 Position pos = new Position(col, row);
@@ -224,10 +230,9 @@ public class SimPresenter {
         }
         Text text = new Text(animal.toString());
         text.setFont(font);
-        text.setBoundsType(TextBoundsType.VISUAL);
+        text.setBoundsType(TextBoundsType.LOGICAL);
         stack.getChildren().addAll(animalCircle, text);
         if (simulation.isPaused()) stack.setOnMouseClicked(event -> handleMouseClick(event, pos));
-
     }
 
     @FXML
@@ -250,7 +255,7 @@ public class SimPresenter {
                     GridPane.setHalignment(stack, HPos.CENTER);
                     Text text = new Text(String.valueOf(plantCounter[row][col]));
                     text.setFont(font);
-                    text.setBoundsType(TextBoundsType.VISUAL);
+                    text.setBoundsType(TextBoundsType.LOGICAL);
                     double colorIntensivity = plantCounter[row][col]/maxCount;
                     Rectangle rectangle = new Rectangle(59 * scale, 59 * scale, Color.hsb(120, colorIntensivity, 1-0.5*colorIntensivity));
                     stack.getChildren().addAll(rectangle, text);
@@ -285,10 +290,10 @@ public class SimPresenter {
                         for (int gen : animal.getGenome().getGenomeList()) if (popularGenome.contains(gen)) counter++;
                         Text text = new Text(String.valueOf(counter));
                         text.setFont(font);
-                        text.setBoundsType(TextBoundsType.VISUAL);
+                        text.setBoundsType(TextBoundsType.LOGICAL);
                         Circle animalCircle;
                         if (counter == 0) animalCircle = new Circle(27*scale, Color.hsb(165, 0.5, 0.87));
-                        else animalCircle = new Circle(27*scale, Color.hsb(16, 0.5, 0.96));
+                        else animalCircle = new Circle(27*scale, Color.hsb(16, Math.min(1,0.2 + 1.2 * counter/simulation.settings.genomeLength()), 0.96));
                         stack.getChildren().addAll(animalCircle, text);
                         stack.setOnMouseClicked(event -> handleMouseClick(event, pos));
                     } else if (map.isPlant(pos)) {
@@ -322,7 +327,7 @@ public class SimPresenter {
     }
 
     private void showAnimalStats(Animal animal) {
-        updateAnimalInfo(simulation.createTrackedAnimalStats(animal));
+        updateAnimalInfo(AnimalStats.getAnimalStats(animal));
         animalStats.setVisible(true);
         showingStats = animal;
     }

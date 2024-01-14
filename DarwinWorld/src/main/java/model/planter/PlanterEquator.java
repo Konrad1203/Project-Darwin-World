@@ -1,12 +1,10 @@
 package model.planter;
 
-import simulation.statistics.SimSettings;
-import simulation.SimMap;
+import simulation.Simulation;
 import model.utilities.Position;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PlanterEquator extends Planter {
 
@@ -15,8 +13,8 @@ public class PlanterEquator extends Planter {
     private final int steppeSize;
     private final int jungleSize;
 
-    public PlanterEquator(SimSettings settings, SimMap map, Random random) {
-        super(settings, map, random);
+    public PlanterEquator(Simulation simulation) {
+        super(simulation);
 
         steppeSize = getEquatorSteppeSize();
         jungleSize = height - 2*steppeSize;
@@ -71,9 +69,5 @@ public class PlanterEquator extends Planter {
     @Override
     public boolean isInJungle(Position pos) {
         return pos.y() >= steppeSize && pos.y() < steppeSize + jungleSize;
-    }
-
-    public List<Position> getJungleList() {
-        return plantsInJungle;
     }
 }

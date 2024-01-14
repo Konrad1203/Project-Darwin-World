@@ -1,18 +1,17 @@
 package model.util;
 
-import simulation.statistics.SimSettings;
 import model.animal.Genome;
+import simulation.Simulation;
+import simulation.statistics.SimSettings;
+import model.animal.GenomeStandard;
 import model.animal.GenomeBackAndForth;
 import org.junit.jupiter.api.Test;
 
-import java.util.Random;
 
 public class GenomeTest {
 
     @Test
     public void checkReading() {
-
-        Random random = new Random();
 
         SimSettings settings = new SimSettings(
                 10,10,
@@ -22,12 +21,12 @@ public class GenomeTest {
                 5,"Back and forth", false, 500);
 
 
-        Genome genome = new GenomeBackAndForth(settings, random);
+        Genome genome = new GenomeBackAndForth(new Simulation(settings, null));
 
         for (int i = 0; i < 10; i++) System.out.printf("%d ",genome.getNext());
         System.out.println();
 
-        genome = new Genome(settings, random);
+        genome = new GenomeStandard(new Simulation(settings, null));
 
         for (int i = 0; i < 10; i++) System.out.printf("%d ",genome.getNext());
         System.out.println();
