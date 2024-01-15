@@ -20,7 +20,7 @@ public class Simulation implements Runnable {
 
     private final Random random = new Random();
     private final SimSettings settings;
-    private final GenomeFactory genomeFactory;
+    private final Factory factory;
     private final SimPresenter presenter;
     private final UUID uuid = UUID.randomUUID();
     private final SimMap map;
@@ -39,16 +39,7 @@ public class Simulation implements Runnable {
         this.settings = settings;
         this.presenter = presenter;
         this.presenter.setupPresenter(this);
-
-        if (settings.genomeVariant().equals("Back and forth")) {
-            genomeFactory = new GenomeBackAndForthFactory(this);
-        }
-        else {
-            genomeFactory = new GenomeStandardFactory(this);
-        }
-
         this.map = new SimMap(this);
-
 
         if (settings.plantsGrowVariant().equals("Equator")) {
 
@@ -64,6 +55,7 @@ public class Simulation implements Runnable {
 
         feeder = new Feeder(map, planter);
         copulator = new Copulator(this);
+        factory = new Factory(this);
 
         planter.spawnStartPlants();
         map.spawnStartAnimals();
@@ -80,7 +72,7 @@ public class Simulation implements Runnable {
     }
 
     public GenomeFactory genomeFactory() {
-        return genomeFactory;
+        return factory.genomeFactory();
     }
 
     @Override
