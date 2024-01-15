@@ -103,8 +103,8 @@ public class SimPresenter {
 
     public void setupPresenter(Simulation sim) {
         simulation = sim;
-        columns = sim.settings.width();
-        rows = sim.settings.height();
+        columns = sim.settings().width();
+        rows = sim.settings().height();
         int cellSize = Math.min(600/rows, 600/columns);
         scale = ((double)cellSize) / 60;
         font = new Font(Math.round(22*scale));
@@ -184,7 +184,7 @@ public class SimPresenter {
             updateSimStats();
             if (animalInfo != null) updateAnimalInfo(animalInfo);
             updateGraphData();
-            if (simulation.settings.saveStats()) stats.printSimStatsToCSV(simulation.getID());
+            if (simulation.settings().saveStats()) stats.printSimStatsToCSV(simulation.getID());
         });
     }
 
@@ -293,7 +293,7 @@ public class SimPresenter {
                         text.setBoundsType(TextBoundsType.LOGICAL);
                         Circle animalCircle;
                         if (counter == 0) animalCircle = new Circle(27*scale, Color.hsb(165, 0.5, 0.87));
-                        else animalCircle = new Circle(27*scale, Color.hsb(16, Math.min(1,0.2 + 1.2 * counter/simulation.settings.genomeLength()), 0.96));
+                        else animalCircle = new Circle(27*scale, Color.hsb(16, Math.min(1,0.2 + 1.2 * counter/simulation.settings().genomeLength()), 0.96));
                         stack.getChildren().addAll(animalCircle, text);
                         stack.setOnMouseClicked(event -> handleMouseClick(event, pos));
                     } else if (map.isPlant(pos)) {

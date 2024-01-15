@@ -13,8 +13,8 @@ public class Copulator {
 
     public Copulator(Simulation simulation){
         this.sim = simulation;
-        this.fullEnergyCount = simulation.settings.fullEnergyCount();
-        this.genomeLength = simulation.settings.genomeLength();
+        this.fullEnergyCount = simulation.settings().fullEnergyCount();
+        this.genomeLength = simulation.settings().genomeLength();
     }
     public void breedAnimals() {
         List<Animal> children = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Copulator {
         List<Animal> children = new ArrayList<>();
         Animal[] parents = getParents(animalList, i);
         while (parents != null) {
-            Animal child = new Animal(sim, parents[0].getPosition(), getChildGenomeList(parents));
+            Animal child = new Animal(sim, sim.settings().energyLossToCopulate() * 2, parents[0].getPosition(), getChildGenomeList(parents));
             parents[0].processCopulation(child);
             parents[1].processCopulation(child);
             children.add(child);
@@ -45,7 +45,7 @@ public class Copulator {
     }
 
     private int[] getChildGenomeList(Animal[] parents) {
-        int order = sim.random.nextInt(0,2);
+        int order = sim.random().nextInt(0,2);
         int[] energies = new int[] {parents[0].getEnergy(), parents[1].getEnergy()};
         int pivot = (genomeLength * energies[order]) / (energies[0] + energies[1]);
         int[] childGenomeList = new int[genomeLength];

@@ -19,14 +19,14 @@ public abstract class Planter {
 
 
     public Planter(Simulation simulation) {
-        this.random = simulation.random;
+        this.random = simulation.random();
         mapPlants = simulation.getMap().getPlants();
-        width = simulation.settings.width();
-        height = simulation.settings.height();
-        startJungleCount = divideTo80_20(simulation.settings.startPlantsCount());
-        startSteppeCount = simulation.settings.startPlantsCount() - startJungleCount;
-        jungleCount = divideTo80_20(simulation.settings.dailyPlantsGrowCount());
-        steppeCount = simulation.settings.dailyPlantsGrowCount() - jungleCount;
+        width = simulation.settings().width();
+        height = simulation.settings().height();
+        startJungleCount = divideTo80_20(simulation.settings().startPlantsCount());
+        startSteppeCount = simulation.settings().startPlantsCount() - startJungleCount;
+        jungleCount = divideTo80_20(simulation.settings().dailyPlantsGrowCount());
+        steppeCount = simulation.settings().dailyPlantsGrowCount() - jungleCount;
     }
 
     private int divideTo80_20(int count) {
