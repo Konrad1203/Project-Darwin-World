@@ -1,6 +1,7 @@
 package model.copulator;
 
 import model.animal.Animal;
+import model.animal.Genome;
 import simulation.Simulation;
 
 import java.util.*;
@@ -34,7 +35,9 @@ public class Copulator {
         List<Animal> children = new ArrayList<>();
         Animal[] parents = getParents(animalList, i);
         while (parents != null) {
-            Animal child = new Animal(sim, sim.settings().energyLossToCopulate() * 2, parents[0].getPosition(), getChildGenomeList(parents));
+            Genome genome = sim.genomeFactory().createGenome(getChildGenomeList(parents));
+            genome.mutate();
+            Animal child = new Animal(sim, sim.settings().energyLossToCopulate() * 2, parents[0].getPosition(), genome);
             parents[0].processCopulation(child);
             parents[1].processCopulation(child);
             children.add(child);
