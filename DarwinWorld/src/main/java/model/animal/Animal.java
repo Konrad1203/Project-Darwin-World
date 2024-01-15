@@ -21,20 +21,19 @@ public class Animal implements Comparable<Animal> {
     private boolean isDead = false;
 
     public Animal(Simulation simulation, int startEnergy) {
-        sim = simulation;
-        position = new Position(sim.random().nextInt(sim.settings().width()), sim.random().nextInt(sim.settings().height()));
-        orientation = Orientation.getOrientationFromNumber(sim.random().nextInt(8));
-        energy = startEnergy;
-        genome = sim.genomeFactory().createGenome();
+        this.sim = simulation;
+        this.position = new Position(sim.random().nextInt(sim.settings().width()), sim.random().nextInt(sim.settings().height()));
+        this.orientation = Orientation.getOrientationFromNumber(sim.random().nextInt(8));
+        this.energy = startEnergy;
+        this.genome = sim.genomeFactory().createGenome();
     }
 
-    public Animal(Simulation simulation, int startEnergy, Position position, int[] genomeList) {
-        sim = simulation;
+    public Animal(Simulation simulation, int startEnergy, Position position, Genome genome) {
+        this.sim = simulation;
         this.position = position;
-        orientation = Orientation.getOrientationFromNumber(sim.random().nextInt(8));
-        energy = startEnergy;
-        genome = sim.genomeFactory().createGenome(genomeList);
-        genome.mutate();
+        this.orientation = Orientation.getOrientationFromNumber(sim.random().nextInt(8));
+        this.energy = startEnergy;
+        this.genome = genome;
     }
 
     public Position getPosition() {
