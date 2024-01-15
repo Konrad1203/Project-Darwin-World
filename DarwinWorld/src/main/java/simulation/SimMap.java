@@ -26,8 +26,8 @@ public class SimMap {
 
     public SimMap(Simulation simulation) {
         sim = simulation;
-        animalGrid = new AnimalGrid(sim.settings);
-        plantsCounter = new int[sim.settings.height()][sim.settings.width()];
+        animalGrid = new AnimalGrid(sim.settings());
+        plantsCounter = new int[sim.settings().height()][sim.settings().width()];
     }
 
     public AnimalGrid getAnimalGrid() {
@@ -75,10 +75,10 @@ public class SimMap {
     }
 
     public boolean canMoveTo(Animal animal, Position position) {
-        if (position.y() < 0 || position.y() >= sim.settings.height()) {
+        if (position.y() < 0 || position.y() >= sim.settings().height()) {
             animal.boundFromPole();
             return false;
-        } else if (position.x() < 0 || position.x() >= sim.settings.width()) {
+        } else if (position.x() < 0 || position.x() >= sim.settings().width()) {
             animal.moveToOtherSide(position);
             return false;
         }
@@ -86,8 +86,8 @@ public class SimMap {
     }
 
     public void spawnStartAnimals() {
-        for (int i = 0; i < sim.settings.startAnimalsCount(); i++) {
-            Animal animal = new Animal(sim);
+        for (int i = 0; i < sim.settings().startAnimalsCount(); i++) {
+            Animal animal = new Animal(sim, sim.settings().startEnergyCount());
             animalGrid.get(animal.getPosition()).add(animal);
             animalList.add(animal);
         }
@@ -111,8 +111,8 @@ public class SimMap {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < sim.settings.height(); i++) {
-            for (int j = 0; j < sim.settings.width(); j++) {
+        for (int i = 0; i < sim.settings().height(); i++) {
+            for (int j = 0; j < sim.settings().width(); j++) {
                 Position position = new Position(j, i);
                 if ( isAnimal(position) ) result.append( "%s ".formatted( animalAt(position) ) );
                 else if ( isPlant(position) ) result.append("w ");

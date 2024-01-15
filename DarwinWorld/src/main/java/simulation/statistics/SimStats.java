@@ -42,8 +42,8 @@ public record SimStats(int day, int animalCount, int deadAnimalCount, int plantC
 
     private static int calculateFreeFieldsCount(Simulation sim) {
         int counter = 0;
-        for (int row = 0; row < sim.settings.height(); row++) {
-            for (int col = 0; col < sim.settings.width(); col++) {
+        for (int row = 0; row < sim.settings().height(); row++) {
+            for (int col = 0; col < sim.settings().width(); col++) {
                 Position pos = new Position(col, row);
                 if (!sim.getMap().isPlant(pos) && !sim.getMap().isAnimal(pos)) counter++;
             }

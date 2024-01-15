@@ -18,9 +18,9 @@ import java.util.*;
 
 public class Simulation implements Runnable {
 
-    public final Random random = new Random();
-    public final SimSettings settings;
-    public final GenomeFactory genomeFactory;
+    private final Random random = new Random();
+    private final SimSettings settings;
+    private final GenomeFactory genomeFactory;
     private final SimPresenter presenter;
     private final UUID uuid = UUID.randomUUID();
     private final SimMap map;
@@ -69,6 +69,18 @@ public class Simulation implements Runnable {
         map.spawnStartAnimals();
         map.getAnimalGrid().sortAnimals();
         updatePresenter();
+    }
+
+    public Random random() {
+        return random;
+    }
+
+    public SimSettings settings() {
+        return settings;
+    }
+
+    public GenomeFactory genomeFactory() {
+        return genomeFactory;
     }
 
     @Override

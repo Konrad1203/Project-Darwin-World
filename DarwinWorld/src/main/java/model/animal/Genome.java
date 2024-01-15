@@ -13,16 +13,16 @@ public abstract class Genome {
 
     public Genome(Simulation simulation) {
         sim = simulation;
-        length = sim.settings.genomeLength();
-        genome = sim.random.ints(length, 0, 8).toArray();
-        activePoint = sim.random.nextInt(length);
+        length = sim.settings().genomeLength();
+        genome = sim.random().ints(length, 0, 8).toArray();
+        activePoint = sim.random().nextInt(length);
     }
 
     public Genome(Simulation simulation, int[] genomeList) {
         sim = simulation;
-        length = sim.settings.genomeLength();
+        length = sim.settings().genomeLength();
         genome = genomeList;
-        activePoint = sim.random.nextInt(length);
+        activePoint = sim.random().nextInt(length);
     }
 
     public int[] getGenomeList() {
@@ -40,10 +40,10 @@ public abstract class Genome {
     }
 
     public void mutate() {
-        if (sim.settings.mutationVariant().equals("Standard")) {
-            int mutationCount = sim.random.nextInt(sim.settings.minMutationCount(), sim.settings.maxMutationCount()+1);
+        if (sim.settings().mutationVariant().equals("Standard")) {
+            int mutationCount = sim.random().nextInt(sim.settings().minMutationCount(), sim.settings().maxMutationCount()+1);
             for (int i = 0; i < mutationCount; i++) {
-                genome[sim.random.nextInt(length)] = sim.random.nextInt(0, 8);
+                genome[sim.random().nextInt(length)] = sim.random().nextInt(0, 8);
             }
         }
     }

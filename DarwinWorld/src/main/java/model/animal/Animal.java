@@ -1,7 +1,6 @@
 package model.animal;
 
 import simulation.Simulation;
-import simulation.statistics.SimSettings;
 import simulation.SimMap;
 import model.utilities.Orientation;
 import model.utilities.Position;
@@ -21,20 +20,20 @@ public class Animal implements Comparable<Animal> {
     private int plantsEaten = 0;
     private boolean isDead = false;
 
-    public Animal(Simulation simulation) {
+    public Animal(Simulation simulation, int startEnergy) {
         sim = simulation;
-        position = new Position(sim.random.nextInt(sim.settings.width()), sim.random.nextInt(sim.settings.height()));
-        orientation = Orientation.getOrientationFromNumber(sim.random.nextInt(8));
-        energy = sim.settings.startEnergyCount();
-        genome = sim.genomeFactory.createGenome();
+        position = new Position(sim.random().nextInt(sim.settings().width()), sim.random().nextInt(sim.settings().height()));
+        orientation = Orientation.getOrientationFromNumber(sim.random().nextInt(8));
+        energy = startEnergy;
+        genome = sim.genomeFactory().createGenome();
     }
 
-    public Animal(Simulation simulation, Position position, int[] genomeList) {
+    public Animal(Simulation simulation, int startEnergy, Position position, int[] genomeList) {
         sim = simulation;
         this.position = position;
-        orientation = Orientation.getOrientationFromNumber(sim.random.nextInt(8));
-        energy = sim.settings.energyLossToCopulate() * 2;
-        genome = sim.genomeFactory.createGenome(genomeList);
+        orientation = Orientation.getOrientationFromNumber(sim.random().nextInt(8));
+        energy = startEnergy;
+        genome = sim.genomeFactory().createGenome(genomeList);
         genome.mutate();
     }
 
@@ -71,12 +70,12 @@ public class Animal implements Comparable<Animal> {
     }
 
     public void consumePlant() {
-        energy += sim.settings.energyFromPlant();
+        energy += sim.settings().energyFromPlant();
         plantsEaten++;
     }
 
     public void processCopulation(Animal child) {
-        energy -= sim.settings.energyLossToCopulate();
+        energy -= sim.settings().energyLossToCopulate();
         children.add(child);
     }
 
@@ -88,7 +87,7 @@ public class Animal implements Comparable<Animal> {
     }
 
     public void moveToOtherSide(Position tempPos) {
-        if (tempPos.x() < 0) position = new Position(sim.settings.width()-1, tempPos.y());
+        if (tempPos.x() < 0) position = new Position(sim.settings().width()-1, tempPos.y());
         else position = new Position(0, tempPos.y());
     }
 
