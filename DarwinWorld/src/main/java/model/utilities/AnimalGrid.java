@@ -5,6 +5,7 @@ import model.animal.Animal;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AnimalGrid implements Iterable<List<Animal>> {
@@ -14,11 +15,11 @@ public class AnimalGrid implements Iterable<List<Animal>> {
 
     public AnimalGrid(SimSettings settings) {
         cols = settings.width();
-        int size = settings.height() * cols;
+        int size = settings.height() * settings.width();
         animals = new ArrayList<>(size);
 
         for (int i = 0; i < size; i++) {
-            animals.add(new ArrayList<>());
+            animals.add(new LinkedList<>());
         }
     }
 

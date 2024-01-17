@@ -31,6 +31,11 @@ public abstract class Genome {
 
     public abstract int getActivePoint();
 
+    public void setActivePoint(int activePoint) {
+        if (activePoint < length) this.activePoint = activePoint;
+        else throw new IllegalArgumentException("Error: active point longer than length: " + activePoint);
+    }
+
     public abstract int getNext();
 
     public void addGenomeCountsToList(int[] genomeCounter) {
@@ -43,7 +48,7 @@ public abstract class Genome {
         if (sim.settings().mutationVariant().equals("Standard")) {
             int mutationCount = sim.random().nextInt(sim.settings().minMutationCount(), sim.settings().maxMutationCount()+1);
             for (int i = 0; i < mutationCount; i++) {
-                genome[sim.random().nextInt(length)] = sim.random().nextInt(0, 8);
+                genome[sim.random().nextInt(length)] = sim.random().nextInt(8);
             }
         }
     }

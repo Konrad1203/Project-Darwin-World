@@ -20,6 +20,12 @@ public class GenomeBackAndForth extends Genome {
     }
 
     @Override
+    public void setActivePoint(int activePoint) {
+        super.setActivePoint(activePoint);
+        readingDirection = true;
+    }
+
+    @Override
     public int getNext() {
         if (activePoint == length) {
             activePoint = 0;

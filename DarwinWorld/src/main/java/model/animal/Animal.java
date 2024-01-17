@@ -118,12 +118,24 @@ public class Animal implements Comparable<Animal> {
     }
 
     public int getDescendantsCount() {
+        HashSet<Animal> descendantsSet = new HashSet<>(children.size());
+        for (Animal child : children) child.putYourselfAndChildrenToSet(descendantsSet);
+        return descendantsSet.size();
+    }
+
+    private void putYourselfAndChildrenToSet(Set<Animal> set) {
+        set.add(this);
+        if (!children.isEmpty()) for (Animal child : children) child.putYourselfAndChildrenToSet(set);
+    }
+
+    /* Nie do końca poprawna, ale zostawiam dla sentymentu (i pewnie jest szybsza)
+    public int oldGetDescendantsCount() {
         int counter = 0;
         for (Animal child : children) {
             counter++;
             counter += child.getChildrenCount();
         }
-
         return counter;
     }
+     */
 }

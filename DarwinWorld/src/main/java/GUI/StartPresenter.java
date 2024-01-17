@@ -78,7 +78,7 @@ public class StartPresenter {
 
     @FXML
     private void loadSettings() {
-        Map<String, SimSettings> dataMap = MapToFile.deserializeMapFromFile(filename);
+        Map<String, SimSettings> dataMap = PresetsSaver.deserializeMapFromFile(filename);
         SimSettings preset = dataMap.get(presetOption.getSelectionModel().getSelectedItem());
         if (preset != null) fillTextFieldWithPreset(preset);
         else createAndShowAlert(Alert.AlertType.ERROR, "Loading preset error", "You cannot load not existing preset");
@@ -87,7 +87,7 @@ public class StartPresenter {
     @FXML
     private void refreshPresetsList() {
         if (!Files.exists(Path.of(filename))) putStandardSetting();
-        this.dataMap = MapToFile.deserializeMapFromFile(filename);
+        this.dataMap = PresetsSaver.deserializeMapFromFile(filename);
         List<String> presetNames = new ArrayList<>(dataMap.keySet());
         Collections.sort(presetNames);
         presetOption.getItems().clear();
@@ -103,7 +103,7 @@ public class StartPresenter {
         else if ( checkTextFieldsValues() && (!dataMap.containsKey(presetName) || (dataMap.containsKey(presetName) && createAndShowAlert(Alert.AlertType.CONFIRMATION, "Saving preset warning", "You are sure, you want to overwrite the %s preset?".formatted(presetName))))) {
             SimSettings preset = createSettings();
             dataMap.put(presetName, preset);
-            MapToFile.serializeMapToFile(dataMap, filename);
+            PresetsSaver.serializeMapToFile(dataMap, filename);
             refreshPresetsList();
             presetOption.getSelectionModel().select(presetName);
             createAndShowAlert(Alert.AlertType.INFORMATION, "Saved preset information", "Your preset %s has been created successfully".formatted(presetName));
@@ -128,7 +128,7 @@ public class StartPresenter {
         } else {
             if (dataMap.containsKey(presetName) && createAndShowAlert(Alert.AlertType.CONFIRMATION, "Removing preset confirmation", "You are sure that you want to delete the preset: %s?".formatted(presetName))) {
                 dataMap.remove(presetName);
-                MapToFile.serializeMapToFile(dataMap, filename);
+                PresetsSaver.serializeMapToFile(dataMap, filename);
                 refreshPresetsList();
             } else if (!dataMap.containsKey(presetName)) {
                 createAndShowAlert(Alert.AlertType.ERROR, "Removing preset error", "You cannot remove not existing preset");
@@ -152,7 +152,7 @@ public class StartPresenter {
                     createAndShowAlert(Alert.AlertType.WARNING, "Occupied preset name", "Name %s is already taken".formatted(newName));
                 else {
                     dataMap.put(newName, dataMap.remove(presetOldName));
-                    MapToFile.serializeMapToFile(dataMap, filename);
+                    PresetsSaver.serializeMapToFile(dataMap, filename);
                     refreshPresetsList();
                     presetOption.getSelectionModel().select(newName);
                 }
@@ -163,7 +163,7 @@ public class StartPresenter {
     private void putStandardSetting() {
         Map<String, SimSettings> dataMap = new HashMap<>();
         dataMap.put("Standard", SimSettings.STANDARD_SETTINGS);
-        MapToFile.serializeMapToFile(dataMap, filename);
+        PresetsSaver.serializeMapToFile(dataMap, filename);
     }
 
     private boolean createAndShowAlert(Alert.AlertType alertType, String title, String headerText) {

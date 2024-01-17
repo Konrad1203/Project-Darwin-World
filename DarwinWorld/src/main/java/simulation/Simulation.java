@@ -38,7 +38,7 @@ public class Simulation implements Runnable {
 
         this.settings = settings;
         this.presenter = presenter;
-        this.presenter.setupPresenter(this);
+        if (presenter != null) this.presenter.setupPresenter(this);
         this.map = new SimMap(this);
 
         if (settings.plantsGrowVariant().equals("Equator")) {
@@ -116,7 +116,7 @@ public class Simulation implements Runnable {
     }
 
     private void updatePresenter() {
-        presenter.update(map, planter, createSimStats(), (trackedAnimal != null ? AnimalStats.getAnimalStats(trackedAnimal) : null));
+        if (presenter != null) presenter.update(map, planter, createSimStats(), (trackedAnimal != null ? AnimalStats.getAnimalStats(trackedAnimal) : null));
     }
 
     private SimStats createSimStats() {
