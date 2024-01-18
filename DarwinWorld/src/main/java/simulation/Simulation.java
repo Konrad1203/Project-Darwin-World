@@ -120,7 +120,7 @@ public class Simulation implements Runnable {
     }
 
     private SimStats createSimStats() {
-        return SimStats.getStats(this, day, map.getAnimalList().size(), map.getDeadAnimalList().size(), map.getPlants().size());
+        return SimStats.getStats(this, day, map.getAnimalList().size(), map.getDeadAnimalsCounter(), map.getPlants().size());
     }
 
     public List<Animal> getAnimalsFromCell(Position position) {

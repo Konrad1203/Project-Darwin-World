@@ -69,9 +69,7 @@ public record SimStats(int day, int animalCount, int deadAnimalCount, int plantC
     }
 
     private static double calculateAverageLifeSpan(SimMap map) {
-        double lifeSpanSum = 0;
-        for (Animal animal : map.getDeadAnimalList()) lifeSpanSum += animal.getDaysSurvived();
-        return lifeSpanSum / map.getDeadAnimalList().size();
+        return map.getLifeSpanSum() / map.getDeadAnimalsCounter();
     }
 
     private static double calculateAverageChildrenCount(SimMap map) {

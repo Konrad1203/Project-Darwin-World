@@ -10,7 +10,7 @@ public class SimMap {
 
     private final Simulation sim;
     private final AnimalGrid animalGrid;
-    private final List<Animal> animalList = new LinkedList<>();
+    private final List<Animal> animalList = new ArrayList<>(100);
     private final Set<Position> plants = new HashSet<>() {
         @Override
         public boolean add(Position p) {
@@ -21,8 +21,8 @@ public class SimMap {
 
     private final int[][] plantsCounter;
     private int maxPlantsCounter = 0;
-
-    private final List<Animal> deadAnimalList = new ArrayList<>();
+    private int deadAnimalsCounter = 0;
+    private double lifeSpanSum = 0;
 
     public SimMap(Simulation simulation) {
         sim = simulation;
@@ -38,8 +38,17 @@ public class SimMap {
         return animalList;
     }
 
-    public List<Animal> getDeadAnimalList() {
-        return deadAnimalList;
+    public int getDeadAnimalsCounter() {
+        return deadAnimalsCounter;
+    }
+
+    public double getLifeSpanSum() {
+        return lifeSpanSum;
+    }
+
+    public void registerDeath(int lifeSpan) {
+        lifeSpanSum += lifeSpan;
+        deadAnimalsCounter++;
     }
 
     public Set<Position> getPlants() {

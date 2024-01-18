@@ -2,26 +2,20 @@ package model.cleaner;
 
 import simulation.SimMap;
 import model.animal.Animal;
-import model.utilities.AnimalGrid;
-import java.util.List;
 
 public class Cleaner {
 
-    private final List<Animal> animalList;
-    private final AnimalGrid animalGrid;
-    private final List<Animal> deadAnimalList;
+    private final SimMap map;
 
     public Cleaner(SimMap map) {
-        animalList = map.getAnimalList();
-        animalGrid = map.getAnimalGrid();
-        deadAnimalList = map.getDeadAnimalList();
+        this.map = map;
     }
 
     public void clean() {
-        animalList.removeIf(animal -> {
+        map.getAnimalList().removeIf(animal -> {
             if (animal.getEnergy() <= 0) {
-                animalGrid.get(animal.getPosition()).remove(animal);
-                deadAnimalList.add(animal);
+                map.getAnimalGrid().get(animal.getPosition()).remove(animal);
+                map.registerDeath(animal.getDaysSurvived());
                 makeAdditionalThings(animal);
                 animal.setDead();
                 return true;
