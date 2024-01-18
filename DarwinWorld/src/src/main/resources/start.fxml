@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane minHeight="200.0" minWidth="400.0" prefHeight="750.0" prefWidth="400.0" stylesheets="start.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.StartPresenter">
+    <top>
+        <Label alignment="CENTER" prefHeight="23.0" prefWidth="300.0" text="Simulation" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <font><Font name="Calibri" size="20.0" /></font>
+            <padding><Insets bottom="20.0" /></padding>
+        </Label>
+    </top>
+   <center>
+       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+           <HBox alignment="CENTER" spacing="20.0">
+               <ComboBox fx:id="presetOption" editable="true" promptText="Enter name" />
+               <Button onAction="#loadSettings" text="Load preset" />
+            <padding><Insets bottom="10.0" /></padding>
+           </HBox>
+
+           <HBox spacing="10.0" style="-fx-alignment: center">
+               <Button id="refreshButton" onAction="#refreshPresetsList"><tooltip><Tooltip text="Refresh presets list" /></tooltip></Button>
+               <Button id="renameButton" onAction="#renamePreset"><tooltip><Tooltip text="Rename preset" /></tooltip></Button>
+               <Button id="saveButton" onAction="#savePreset"><tooltip><Tooltip text="Save preset" /></tooltip></Button>
+               <Button id="removeButton" onAction="#removePreset"><tooltip><Tooltip text="Remove preset" /></tooltip></Button>
+            <padding><Insets bottom="35.0" /></padding>
+           </HBox>
+
+           <HBox spacing="20.0" style="-fx-alignment: center">
+               <VBox>
+                   <Label text="Height" />
+                   <Spinner fx:id="height" editable="true" promptText="Enter height">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="30" min="5" /></valueFactory>
+                       <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Plants grown at start" />
+                   <Spinner fx:id="startPlantsCount" editable="true" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="0" /></valueFactory>
+                       <VBox.margin><Insets bottom="10" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Plants grow over day" />
+                   <Spinner fx:id="dailyPlantsGrowCount" editable="true" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="2" /></valueFactory>
+                       <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Animal at start" />
+                   <Spinner fx:id="startAnimalsCount" editable="true" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="0" /></valueFactory>
+                       <VBox.margin><Insets bottom="10" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Required energy to be full" />
+                   <Spinner fx:id="fullEnergyCount" editable="true" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="5" /></valueFactory>
+                       <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Genome length" />
+                   <Spinner fx:id="genomeLength" editable="true" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="5" /></valueFactory>
+                       <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
+                   </Spinner>
+               </VBox>
+               <VBox>
+                   <Label text="Width" />
+                   <Spinner fx:id="width" editable="true" promptText="Enter width">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="10" max="30" min="5" /></valueFactory>
+                       <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Energy from plant" />
+                   <Spinner fx:id="energyFromPlant" editable="true" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="5" /></valueFactory>
+                       <VBox.margin><Insets bottom="10" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Plants growing variant" />
+                   <ComboBox fx:id="plantsGrowVariant" prefHeight="26.0" prefWidth="150.0">
+                       <items>
+                           <FXCollections fx:factory="observableArrayList">
+                               <String fx:value="Equator" />
+                               <String fx:value="On dead animals" />
+                           </FXCollections>
+                       </items>
+                       <VBox.margin><Insets bottom="25.0" top="2" /></VBox.margin>
+                   </ComboBox>
+
+                   <Label text="Start animal energy" />
+                   <Spinner fx:id="startEnergyCount" editable="true" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="10" /></valueFactory>
+                       <VBox.margin><Insets bottom="10" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Energy copulation loss" />
+                   <Spinner fx:id="energyLossToCopulate" editable="true" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="5" /></valueFactory>
+                       <VBox.margin><Insets bottom="25" top="2" /></VBox.margin>
+                   </Spinner>
+
+                   <Label text="Genome variant" />
+                   <ComboBox fx:id="genomeVariant" prefHeight="26.0" prefWidth="150.0">
+                       <items>
+                           <FXCollections fx:factory="observableArrayList">
+                               <String fx:value="Standard" />
+                               <String fx:value="Back and forth" />
+                           </FXCollections>
+                       </items>
+                       <VBox.margin><Insets bottom="25.0" top="2" /></VBox.margin>
+                   </ComboBox>
+               </VBox>
+           </HBox>
+
+           <HBox spacing="14.5" style="-fx-alignment: center">
+               <VBox>
+                   <Label text="Min. mutations" />
+                   <Spinner fx:id="minMutationCount" editable="true" maxWidth="97.0" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="10" min="0" /></valueFactory>
+                       <VBox.margin><Insets top="2" /></VBox.margin>
+                   </Spinner>
+               </VBox>
+               <VBox>
+                   <Label text="Max. mutations" />
+                   <Spinner fx:id="maxMutationCount" editable="true" maxWidth="97.0" promptText="Enter number">
+                       <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory max="20" min="0" /></valueFactory>
+                       <VBox.margin><Insets top="2" /></VBox.margin>
+                   </Spinner>
+               </VBox>
+               <VBox>
+                   <Label text="Mutation variant" />
+                   <ComboBox fx:id="mutationVariant" maxWidth="97.0" prefHeight="26.0" prefWidth="150.0">
+                       <items>
+                           <FXCollections fx:factory="observableArrayList">
+                               <String fx:value="Standard" />
+                           </FXCollections>
+                       </items>
+                       <VBox.margin><Insets bottom="15" top="2" /></VBox.margin>
+                   </ComboBox>
+               </VBox>
+           </HBox>
+
+            <VBox>
+                <HBox spacing="8">
+                    <Spinner fx:id="frameTime" maxHeight="15" maxWidth="60" styleClass="frameTime">
+                        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="50" initialValue="300" max="2000" min="50" /></valueFactory>
+                    </Spinner>
+                    <Label prefHeight="25.0" text="Frametime (in ms)" />
+                </HBox>
+                <CheckBox fx:id="saveStats" text="Save statistics to a file result.csv"><VBox.margin><Insets top="5" /></VBox.margin></CheckBox>
+            </VBox>
+
+           <HBox style="-fx-alignment: center">
+               <Button fx:id="runSimulationButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="180.0" text="Run simulation">
+                   <font><Font size="14.0" /></font>
+               </Button>
+               <VBox.margin><Insets top="25" /></VBox.margin>
+           </HBox>
+       </VBox>
+   </center>
+   <padding>
+      <Insets bottom="40.0" left="40.0" right="40.0" top="25.0" />
+   </padding>
+</BorderPane>
