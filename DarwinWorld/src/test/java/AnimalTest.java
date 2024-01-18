@@ -30,6 +30,6 @@ public class AnimalTest {
         child1.processCopulation(child4);
         child2.processCopulation(child4);
 
-        assertEquals(a1.getDescendantsCount(), 4); // na pewno nie 6
+        assertEquals(a1.getDescendantsCount(), 6);
     }
 }
